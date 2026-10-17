@@ -16,7 +16,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private let settings = AppSettings()
     private let recognizer = SpeechRecognizer()
-    private let polisher = Polisher()
     private let recorder = Recorder()
     private let updater = AppUpdater()
     private lazy var keyMonitor = KeyMonitor(shortcut: settings.shortcut)
@@ -24,7 +23,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var settingsWindow: NSWindow?
     private var state = State.idle
     private var recognizerStatus: String?
-    private var polisherUnavailableReason: String?
     private var lastResult: String?
     private var lastDetail: String?
 
@@ -63,7 +61,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         withObservationTracking {
             _ = settings.shortcut
             _ = settings.recordingMode
-            _ = settings.polishes
             _ = settings.vocabularyLists
         } onChange: { [weak self] in
             Task { @MainActor in
@@ -78,8 +75,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func prepare() {
         recognizerStatus = "準備中…"
         Task {
-            polisherUnavailableReason = await polisher.unavailableReason
-            if polisherUnavailableReason == nil { await polisher.prewarm() }
             do {
                 try await recognizer.prepare()
                 recognizerStatus = nil
@@ -179,34 +174,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        var polished: String?
-        var polishMs: Int?
-        var polishNote: String?
-        if settings.polishes && polisherUnavailableReason == nil {
-            let polishStart = ContinuousClock.now
-            do {
-                polished = try await polisher.polish(cleaned, terms: vocabulary.terms)
-                    .map { normalize($0, with: vocabulary) }
-                if polished == nil { polishNote = "清書は翻訳や言い換えの疑いがあったので使わなかった" }
-            } catch {
-                polishNote = "清書できなかった: \(error.localizedDescription)"
-            }
-            polishMs = Self.milliseconds(since: polishStart)
-        }
-
-        let text = polished ?? cleaned
-        let pasted = Paster.paste(text)
-        let seconds = Double(samples.count) / SpeechRecognizer.format.sampleRate
+        let pasted = Paster.paste(cleaned)
         // メニューには、知らせることがあるときだけ一言出す
-        var notes = [polishNote].compactMap { $0 }
-        if !pasted { notes.append("貼り付けられなかったので、クリップボードにコピーした") }
-        show(result: text, detail: notes.isEmpty ? nil : notes.joined(separator: "・"))
+        show(result: cleaned, detail: pasted ? nil : "貼り付けられなかったので、クリップボードにコピーした")
 
         record(
             samples: samples,
             entry: [
-                "audioSeconds": seconds, "raw": raw, "cleaned": cleaned, "polished": polished ?? NSNull(),
-                "text": text, "recognizeMs": recognizeMs, "polishMs": polishMs ?? NSNull(),
+                "audioSeconds": Double(samples.count) / SpeechRecognizer.format.sampleRate, "raw": raw,
+                "text": cleaned, "recognizeMs": recognizeMs,
             ])
     }
 
@@ -292,11 +268,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             item.representedObject = list.id
             item.state = list.isEnabled ? .on : .off
         }
-        menu.addItem(.separator())
-        let polish = menu.addItem(
-            withTitle: "Apple Intelligence で清書", action: #selector(togglePolish), keyEquivalent: "")
-        polish.state = settings.polishes && polisherUnavailableReason == nil ? .on : .off
-        polish.isEnabled = polisherUnavailableReason == nil
 
         menu.addItem(.separator())
         menu.addItem(withTitle: "設定…", action: #selector(openSettings), keyEquivalent: ",")
@@ -321,14 +292,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         updater.checkForUpdates()
     }
 
-    @objc private func togglePolish() {
-        settings.polishes.toggle()
-    }
-
     @objc private func openSettings() {
         if settingsWindow == nil {
             let view = SettingsView(
-                settings: settings, updater: updater, polisherUnavailableReason: polisherUnavailableReason,
+                settings: settings, updater: updater,
                 captureShortcut: { [weak self] completion in self?.keyMonitor.captureShortcut(completion) })
             let window = NSWindow(contentViewController: NSHostingController(rootView: view))
             window.title = "Uchikoe の設定"
@@ -338,8 +305,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             window.center()
             settingsWindow = window
         }
-        NSApp.activate()
-        settingsWindow?.makeKeyAndOrderFront(nil)
+        // メニューから開いた時点ではアプリが前面になっていないので、ウィンドウは状態にかかわらず最前面に出す
+        DispatchQueue.main.async { [weak self] in
+            NSApp.activate()
+            self?.settingsWindow?.makeKeyAndOrderFront(nil)
+            self?.settingsWindow?.orderFrontRegardless()
+        }
     }
 
     @objc private func openAccessibility() {

@@ -38,6 +38,11 @@ struct VocabularyTests {
         #expect(vocabulary.apply("Google で調べる") == "Google で調べる")
     }
 
+    @Test func replacesMisheardFormsMixingKanjiAndEnglish() {
+        let vocabulary = vocabulary("useEffect = 有数エフェクト, USエフェクト")
+        #expect(vocabulary.apply("有数エフェクトとUSエフェクト") == "useEffectとuseEffect")
+    }
+
     @Test func normalizesLetterCase() {
         let vocabulary = vocabulary("GitHub\nTypeScript")
         #expect(vocabulary.apply("githubとtypescript") == "GitHubとTypeScript")
