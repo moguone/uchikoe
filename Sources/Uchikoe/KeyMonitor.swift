@@ -64,6 +64,10 @@ final class KeyMonitor {
             if let tap { CGEvent.tapEnable(tap: tap, enable: true) }
             return true
         }
+        // ほかのアプリが送ったキーは見ない。BetterTouchTool は ⌥⌘← などを送るときに fn の押下も添え、
+        // ⌥⌘ には左右のフラグを付けないため、fn だけが押されたように見えてしまう。
+        // キーボードからの入力は、Karabiner-Elements を通したものも含めて送り元が 0 になる。
+        guard event.getIntegerValueField(.eventSourceUnixProcessID) == 0 else { return true }
         let key = UInt16(event.getIntegerValueField(.keyboardEventKeycode))
         let isRepeat = event.getIntegerValueField(.keyboardEventAutorepeat) != 0
 
