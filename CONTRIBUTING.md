@@ -21,7 +21,7 @@ open dist/Uchikoe.app
 
 | 場所 | 役割 |
 |---|---|
-| `Sources/UchikoeCore/` | テストできる部品。語彙リスト（`Vocabulary`）、フィラーの除去（`TextCleanup`）、録音のキー（`Shortcut`）、清書（`Polisher`） |
+| `Sources/UchikoeCore/` | テストできる部品。語彙リスト（`Vocabulary`）、フィラーの除去（`TextCleanup`）、録音のキー（`Shortcut`） |
 | `Sources/Uchikoe/` | アプリ本体。録音、音声認識、キー入力の見張り、貼り付け、メニューバー、設定画面、アップデート |
 | `Resources/` | アプリのアイコンと、最初に入っている語彙リスト（1 行に 1 語で「表記 = 読み, 読み」） |
 | `Tests/UchikoeCoreTests/` | `UchikoeCore` の単体テスト |

@@ -16,10 +16,6 @@ final class AppSettings {
         didSet { defaults.set(recordingMode.rawValue, forKey: "recordingMode") }
     }
 
-    var polishes: Bool {
-        didSet { defaults.set(polishes, forKey: "polishes") }
-    }
-
     var savesHistory: Bool {
         didSet { defaults.set(savesHistory, forKey: "savesHistory") }
     }
@@ -48,7 +44,6 @@ final class AppSettings {
             defaults.data(forKey: "shortcut").flatMap { try? JSONDecoder().decode(Shortcut.self, from: $0) }
             ?? .default
         recordingMode = defaults.string(forKey: "recordingMode").flatMap(RecordingMode.init) ?? .hold
-        polishes = defaults.object(forKey: "polishes") as? Bool ?? true
         // 話した内容が平文で残るので、既定では残さない
         savesHistory = defaults.bool(forKey: "savesHistory")
         savesRecordings = defaults.bool(forKey: "savesRecordings")

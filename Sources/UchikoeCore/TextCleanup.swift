@@ -1,6 +1,6 @@
 import Foundation
 
-/// 規則で確実に直せるものを直す。フィラーの除去と、日本語と英数字の間の空白の除去。
+/// 規則で確実に直せるものを直す。フィラーの除去と、日本語と英数字の間や句読点の前の空白の除去。
 public enum TextCleanup {
     /// 読点・文頭・文末に挟まれたフィラーを消す（「あの人」の「あの」や「まあいいか」は残す）
     private static let fillers = regex(
@@ -15,6 +15,8 @@ public enum TextCleanup {
         #"(?<=[\p{Han}\p{Hiragana}\p{Katakana}ー、。])\s+(?=[A-Za-z0-9])|(?<=[A-Za-z0-9.])\s+(?=[\p{Han}\p{Hiragana}\p{Katakana}ー、。])"#
     )
     private static let leadingSeparators = regex(#"^[、\s]+"#)
+    /// 「ますか ？」のような、句読点の前の空白
+    private static let spaceBeforePunctuation = regex(#"\s+(?=[、。？！?!])"#)
 
     public static func apply(_ text: String) -> String {
         var result = text
@@ -25,7 +27,7 @@ public enum TextCleanup {
             if next == result { break }
             result = next
         }
-        result = remove(spaceBetweenScripts, from: result)
+        result = remove(spaceBeforePunctuation, from: remove(spaceBetweenScripts, from: result))
         return remove(leadingSeparators, from: result)
     }
 

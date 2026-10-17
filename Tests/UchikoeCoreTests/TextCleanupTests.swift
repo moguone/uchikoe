@@ -31,6 +31,10 @@ struct TextCleanupTests {
         #expect(TextCleanup.apply("V2の Reactjsを GitHubにプッシュして。") == "V2のReactjsをGitHubにプッシュして。")
     }
 
+    @Test func removesSpacesBeforePunctuation() {
+        #expect(TextCleanup.apply("動くか見てもらえますか ？") == "動くか見てもらえますか？")
+    }
+
     @Test func keepsSpacesBetweenEnglishWords() {
         #expect(TextCleanup.apply("VS Code で開く") == "VS Codeで開く")
     }

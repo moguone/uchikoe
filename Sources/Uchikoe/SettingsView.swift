@@ -5,14 +5,13 @@ import UchikoeCore
 struct SettingsView: View {
     @Bindable var settings: AppSettings
     let updater: AppUpdater
-    let polisherUnavailableReason: String?
     /// 次に押されたキーをショートカットとして記録する。取り消されたら nil
     let captureShortcut: (@escaping (Shortcut?) -> Void) -> Void
 
     var body: some View {
         TabView {
             GeneralSettingsView(
-                settings: settings, updater: updater, polisherUnavailableReason: polisherUnavailableReason,
+                settings: settings, updater: updater,
                 captureShortcut: captureShortcut
             )
             .tabItem { Label("一般", systemImage: "gearshape") }
@@ -26,7 +25,6 @@ struct SettingsView: View {
 private struct GeneralSettingsView: View {
     @Bindable var settings: AppSettings
     let updater: AppUpdater
-    let polisherUnavailableReason: String?
     let captureShortcut: (@escaping (Shortcut?) -> Void) -> Void
     @State private var isCapturing = false
 
@@ -70,13 +68,6 @@ private struct GeneralSettingsView: View {
             }
             Section("起動") {
                 LaunchAtLoginToggle()
-            }
-            Section("清書") {
-                Toggle("Apple Intelligence で英単語と句読点を整える", isOn: $settings.polishes)
-                    .disabled(polisherUnavailableReason != nil)
-                if let polisherUnavailableReason {
-                    Text("使えない: \(polisherUnavailableReason)").font(.callout).foregroundStyle(.secondary)
-                }
             }
             Section("記録") {
                 Toggle("文字にした結果を履歴に残す", isOn: $settings.savesHistory)
