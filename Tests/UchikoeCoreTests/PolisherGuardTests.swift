@@ -25,6 +25,12 @@ struct PolisherGuardTests {
         #expect(!Polisher.looksFaithful("カタログが出ている", to: "カタイラーが出ている", allowedTerms: []))
     }
 
+    @Test func rejectsReplacingEnglishWordsInTheOriginal() {
+        #expect(
+            !Polisher.looksFaithful(
+                "ReactのuseStateをGitHubに", to: "ReactのUSエフェクトをGitHubに", allowedTerms: ["useState", "useEffect"]))
+    }
+
     @Test func rejectsUnknownEnglishWords() {
         #expect(!Polisher.looksFaithful("Reactのチケット", to: "リニアのチケット", allowedTerms: ["Linear"]))
     }

@@ -338,8 +338,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             window.center()
             settingsWindow = window
         }
-        NSApp.activate()
-        settingsWindow?.makeKeyAndOrderFront(nil)
+        // メニューから開いた時点ではアプリが前面になっていないので、ウィンドウは状態にかかわらず最前面に出す
+        DispatchQueue.main.async { [weak self] in
+            NSApp.activate()
+            self?.settingsWindow?.makeKeyAndOrderFront(nil)
+            self?.settingsWindow?.orderFrontRegardless()
+        }
     }
 
     @objc private func openAccessibility() {

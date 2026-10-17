@@ -67,8 +67,8 @@ public actor Polisher {
 
     /// 許すのは、カタカナを英語に置き換えることと、句読点や空白の修正だけ。
     /// 漢字とひらがなの並びが変わったり、元になかったカタカナが現れたりしたら、翻訳や言い換えとみなす。
-    /// 新しく現れた英単語は、元の文か語彙リストにあるものだけを認める。
-    /// 「リニア」を「React」にするような作り話を弾くため。
+    /// 新しく現れた英単語は、元の文か語彙リストにあるものだけを認める。元の文の英単語は残っていなければならない。
+    /// 「リニア」を「React」に、「USエフェクト」を「useState」にするような作り話を弾くため。
     static func looksFaithful(_ polished: String, to original: String, allowedTerms: [String]) -> Bool {
         func kanjiAndHiragana(_ s: String) -> [Unicode.Scalar] {
             s.unicodeScalars.filter { (0x3041...0x309F).contains($0.value) || $0.properties.isIdeographic }
@@ -87,6 +87,7 @@ public actor Polisher {
         return kanjiAndHiragana(polished) == kanjiAndHiragana(original)
             && isSubsequence(katakana(polished), of: katakana(original))
             && words(in: polished).isSubset(of: allowedWords)
+            && words(in: original).isSubset(of: words(in: polished))
     }
 
     /// 文に出てくる英単語や識別子（useEffect、ABC-123 など）を、小文字にして返す
