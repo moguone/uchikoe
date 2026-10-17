@@ -46,12 +46,21 @@ public actor Polisher {
         LanguageModelSession(model: model, instructions: Self.baseInstructions).prewarm()
     }
 
+    /// 毎回同じ結果になるよう、いちばん確からしい語を選ぶ。
+    /// Xcode 27（Swift 6.4）の SDK で書き方が変わったので、古い SDK でもビルドできるように書き分ける
+    private static var greedy: GenerationOptions {
+        #if compiler(>=6.4)
+            GenerationOptions(samplingMode: .greedy)
+        #else
+            GenerationOptions(sampling: .greedy)
+        #endif
+    }
+
     /// 直した文を返す。翻訳や要約をしてしまったらしいときは nil
     public func polish(_ text: String, terms: [String]) async throws -> String? {
         // 発話ごとに独立させるため、毎回新しいセッションを作る
         let session = LanguageModelSession(model: model, instructions: Self.instructions(terms: terms))
-        let response = try await session.respond(
-            to: "<transcript>\(text)</transcript>", options: GenerationOptions(samplingMode: .greedy))
+        let response = try await session.respond(to: "<transcript>\(text)</transcript>", options: Self.greedy)
         let polished = response.content.trimmingCharacters(in: .whitespacesAndNewlines)
         return Self.looksFaithful(polished, to: text, allowedTerms: terms) ? polished : nil
     }

@@ -102,10 +102,10 @@ while IFS= read -r -d '' file; do
 done < <(find "$framework" -type f -print0)
 for target in Versions/B/Autoupdate Versions/B/Updater.app Versions/B/XPCServices/Installer.xpc \
   Versions/B/XPCServices/Downloader.xpc .; do
-  codesign --force --options "$runtime_options" --preserve-metadata=entitlements "${timestamp[@]}" \
+  codesign --force --options "$runtime_options" --preserve-metadata=entitlements ${timestamp[@]+"${timestamp[@]}"} \
     --sign "$identity" "$framework/$target"
 done
-codesign --force --options "$runtime_options" "${timestamp[@]}" --entitlements Uchikoe.entitlements \
+codesign --force --options "$runtime_options" ${timestamp[@]+"${timestamp[@]}"} --entitlements Uchikoe.entitlements \
   --sign "$identity" "$app"
 codesign --verify --deep --strict "$app"
 
