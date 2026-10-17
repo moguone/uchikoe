@@ -20,7 +20,7 @@ YAML = ヤムル, ヤメル
 Markdown = マークダウン
 
 # フロントエンド
-React = リアクト
+React = リアクト, リアクター
 Next.js = ネクストジェーエス, ネクストジェイエス, ネクストジェス, ネクスト JS, Next JS, Next js, NextJS
 Vue.js = ビュージェーエス, ビュージェイエス
 Nuxt = ナクスト
@@ -99,7 +99,7 @@ Grafana = グラファナ
 
 # 開発ツール・サービス
 Git = ギット
-GitHub = ギットハブ, キットハブ, Gitハブ
+GitHub = ギットハブ, キットハブ, Gitハブ, KitHub
 GitLab = ギットラボ, ギットラブ
 Bitbucket = ビットバケット
 VS Code = ブイエスコード, ビーエスコード, VSコード
