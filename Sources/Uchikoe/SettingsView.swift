@@ -72,15 +72,15 @@ private struct GeneralSettingsView: View {
                 LaunchAtLoginToggle()
             }
             Section("清書") {
-                Toggle("Foundation Models で英単語と句読点を直す", isOn: $settings.polishes)
+                Toggle("Apple Intelligence で英単語と句読点を整える", isOn: $settings.polishes)
                     .disabled(polisherUnavailableReason != nil)
                 if let polisherUnavailableReason {
                     Text("使えない: \(polisherUnavailableReason)").font(.callout).foregroundStyle(.secondary)
                 }
             }
             Section("記録") {
-                Toggle("文字にした結果と処理時間を履歴（history.jsonl）に残す", isOn: $settings.savesHistory)
-                Toggle("話した音声を録音（recordings/）に残す", isOn: $settings.savesRecordings)
+                Toggle("文字にした結果を履歴に残す", isOn: $settings.savesHistory)
+                Toggle("話した音声を残す", isOn: $settings.savesRecordings)
                 LabeledContent("保存先") {
                     Button("Finder で開く") {
                         let directory = AppSettings.supportDirectory

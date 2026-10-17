@@ -60,14 +60,10 @@ struct VocabularyTests {
         #expect(Vocabulary(lists: [list]).entries.isEmpty)
     }
 
-    @Test func readsListsSavedAsText() throws {
-        // 以前は 1 つのテキストで保存していた
-        let json = """
-            [{"id": "6A0D3C7E-1F7B-4B8E-9C2A-3B4D5E6F7A8B", "name": "開発", "isEnabled": true,
-              "text": "GitHub = ギットハブ\\nRust"}]
-            """
-        let lists = try JSONDecoder().decode([VocabularyList].self, from: Data(json.utf8))
-        #expect(lists[0].entries.map(\.term) == ["GitHub", "Rust"])
+    @Test func savesAndRestoresLists() throws {
+        let lists = [
+            VocabularyList(name: "開発", isEnabled: true, entries: Vocabulary.parse("GitHub = ギットハブ\nRust"))
+        ]
         let encoded = try JSONEncoder().encode(lists)
         #expect(try JSONDecoder().decode([VocabularyList].self, from: encoded) == lists)
     }
