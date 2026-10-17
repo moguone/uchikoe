@@ -37,6 +37,14 @@ cp -R Resources/vocabularies "$app/Contents/Resources/"
 cp LICENSE "$app/Contents/Resources/LICENSE.txt"
 cp THIRD_PARTY_NOTICES.md "$app/Contents/Resources/Third-Party Notices.md"
 
+# アプリの中のファイル名は英数字だけにする。日本語の名前は、Finder でコピーしたり zip を展開したりすると
+# Unicode の正規化が変わり、署名が合わなくなって「壊れている」と判定される
+if find "$app" | LC_ALL=C grep -q '[^ -~]'; then
+  echo "アプリの中に英数字以外のファイル名がある:" >&2
+  find "$app" | LC_ALL=C grep '[^ -~]' >&2
+  exit 1
+fi
+
 # アイコン（Resources/AppIcon.png、1024×1024）から icns を作る
 iconset="$(mktemp -d)/AppIcon.iconset"
 mkdir -p "$iconset"

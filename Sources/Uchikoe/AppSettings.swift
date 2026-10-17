@@ -89,11 +89,7 @@ final class AppSettings {
             .sorted { $0.lastPathComponent < $1.lastPathComponent }
             .compactMap { url in
                 guard let text = try? String(contentsOf: url, encoding: .utf8) else { return nil }
-                // 「01-開発.txt」→「開発」
-                let bundleName = url.deletingPathExtension().lastPathComponent
-                let name = bundleName.replacingOccurrences(of: #"^\d+-"#, with: "", options: .regularExpression)
-                return VocabularyList(
-                    name: name, isEnabled: false, entries: Vocabulary.parse(text), bundleName: bundleName)
+                return VocabularyList.bundled(fileName: url.lastPathComponent, text: text)
             }
     }
 

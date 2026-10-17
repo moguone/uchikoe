@@ -12,6 +12,14 @@ struct BundledVocabularyTests {
         Dictionary(uniqueKeysWithValues: list.entries.map { ($0.term, $0.readings) })
     }
 
+    @Test func readsNameFromTheHeaderAndKeepsTheIdentifier() {
+        let list = VocabularyList.bundled(fileName: "01-development.txt", text: "# name: 開発\n# 説明\nGitHub = ギットハブ")
+        #expect(list.name == "開発")
+        #expect(list.bundleName == "01-開発")
+        #expect(!list.isEnabled)
+        #expect(list.entries.map(\.term) == ["GitHub"])
+    }
+
     @Test func addsNewTermsAndUpdatesUneditedReadings() {
         var saved = bundled("useEffect = ユーズエフェクト\nGitHub = ギットハブ")
         saved.isEnabled = true

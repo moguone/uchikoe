@@ -37,6 +37,23 @@ public struct VocabularyList: Codable, Identifiable, Equatable, Sendable {
         if bundleName != nil { bundledEntries = Self.snapshot(of: entries) }
     }
 
+    /// アプリに同梱した語彙ファイルからリストを作る。
+    /// ファイル名は英数字だけにする（例: 01-development.txt）。日本語のファイル名は、Finder でコピーしたり zip を
+    /// 展開したりすると Unicode の正規化が変わり、アプリの署名が合わなくなって「壊れている」と判定されるため。
+    /// 表示名は 1 行目の「# name: 開発」から読み、識別名は「ファイル名の番号-表示名」（例: 01-開発）にする
+    public static func bundled(fileName: String, text: String) -> VocabularyList {
+        let stem = (fileName as NSString).deletingPathExtension
+        let number = stem.prefix { $0.isNumber }
+        let header = text.split(whereSeparator: \.isNewline).first.map(String.init) ?? ""
+        let name =
+            header.hasPrefix("# name:")
+            ? header.dropFirst("# name:".count).trimmingCharacters(in: .whitespaces)
+            : String(stem.drop { $0.isNumber || $0 == "-" })
+        return VocabularyList(
+            name: name, isEnabled: false, entries: Vocabulary.parse(text),
+            bundleName: number.isEmpty ? name : "\(number)-\(name)")
+    }
+
     /// 保存していたリストに、アプリに同梱したリストの新しい版を取り込む。
     /// - 同梱のリストに新しく足された語は追加する。前回の版にあって今はない語は、利用者が消したとみなして戻さない
     /// - 読みが前回の版のままなら新しい読みにする。利用者が書き換えた読みは残す
