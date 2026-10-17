@@ -37,6 +37,14 @@ cp -R Resources/vocabularies "$app/Contents/Resources/"
 cp LICENSE "$app/Contents/Resources/LICENSE.txt"
 cp THIRD_PARTY_NOTICES.md "$app/Contents/Resources/Third-Party Notices.md"
 
+# アプリの中のファイル名は ASCII の文字だけにする。日本語の名前は、Finder でコピーしたり zip を展開したりすると
+# Unicode の正規化が変わり、署名が合わなくなって「壊れている」と判定される。出力先のパスは問わない
+non_ascii="$(cd "$app" && find . | LC_ALL=C grep '[^ -~]' || true)"
+if [[ -n "$non_ascii" ]]; then
+  printf 'アプリの中に ASCII 以外の文字を含むファイル名がある:\n%s\n' "$non_ascii" >&2
+  exit 1
+fi
+
 # アイコン（Resources/AppIcon.png、1024×1024）から icns を作る
 iconset="$(mktemp -d)/AppIcon.iconset"
 mkdir -p "$iconset"
