@@ -14,6 +14,15 @@ struct TextCleanupTests {
                 == "Reactの有数エフェクトをGitHubにプッシュして。")
     }
 
+    @Test func removesFillersBeforeEnglishAfterParticles() {
+        #expect(TextCleanup.apply("ReactのuseEffectをんとGitHubにプッシュして") == "ReactのuseEffectをGitHubにプッシュして")
+    }
+
+    @Test func keepsWordEndingsBeforeEnglish() {
+        #expect(TextCleanup.apply("考えとAIの提案を比べる") == "考えとAIの提案を比べる")
+        #expect(TextCleanup.apply("ちゃんとAWSで動かす") == "ちゃんとAWSで動かす")
+    }
+
     @Test func keepsWordsThatOnlyLookLikeFillers() {
         #expect(TextCleanup.apply("あの人が言ってたその件、まあいいか。") == "あの人が言ってたその件、まあいいか。")
     }

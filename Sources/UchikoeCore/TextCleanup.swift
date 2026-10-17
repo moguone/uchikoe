@@ -7,8 +7,10 @@ public enum TextCleanup {
         #"(?<=^|[、。？！\s])(えーっと|えーと|えっと|えー+|あのー*|まあ|そのー+|うーん|んー)(、|\s+|(?=[。？！]|$))"#)
     /// ほかの言葉になりようがないフィラーは、読点がなくても消す。音声認識は読点を付けないことが多い
     private static let unambiguousFillers = regex(#"(えーっと|えーと|えっと|うーん|あのー+|そのー+)(、|\s+)?"#)
-    /// 「あの」「えと」は、すぐあとに英単語が続くときだけフィラーとみなす（「あのReact」「えとGitHub」）
-    private static let fillersBeforeEnglish = regex(#"(あの|えと)\s*(?=[A-Za-z])"#)
+    /// 「あの」「えと」「んと」は、すぐあとに英単語が続き、前が文の始まり・句読点・空白・助詞のときだけフィラーとみなす。
+    /// 「あのReact」「をえとGitHub」は消し、「考えとAI」「ちゃんとAWS」は残す
+    private static let fillersBeforeEnglish = regex(
+        #"(?<=^|[、。？！\sをがにはでのへもとや]|[A-Za-z0-9])(あの|えと|んと)\s*(?=[A-Za-z])"#)
     private static let spaceBetweenScripts = regex(
         #"(?<=[\p{Han}\p{Hiragana}\p{Katakana}ー、。])\s+(?=[A-Za-z0-9])|(?<=[A-Za-z0-9.])\s+(?=[\p{Han}\p{Hiragana}\p{Katakana}ー、。])"#
     )
