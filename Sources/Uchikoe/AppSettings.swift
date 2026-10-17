@@ -58,12 +58,22 @@ final class AppSettings {
             vocabularyLists = lists
             vocabulary = Vocabulary(lists: lists)
         } else {
-            // 初回は同梱のリストから始め、以後は保存したものを使う
+            // 初回は同梱のリストから始め、以後は保存したものを使う。
+            // ファイルがあるのに読めなかったときは、登録した語を失わないよう別名で残してから作り直す
+            Self.setAsideUnreadableVocabularyFile()
             let lists = Self.bundledVocabularyLists()
             vocabularyLists = lists
             vocabulary = Vocabulary(lists: lists)
             saveVocabularyLists()
         }
+    }
+
+    private static func setAsideUnreadableVocabularyFile() {
+        let url = vocabularyURL
+        guard FileManager.default.fileExists(atPath: url.path) else { return }
+        let stamp = ISO8601DateFormatter().string(from: Date()).replacingOccurrences(of: ":", with: "-")
+        let backup = url.deletingPathExtension().appendingPathExtension("unreadable-\(stamp).json")
+        try? FileManager.default.moveItem(at: url, to: backup)
     }
 
     /// アプリに同梱した初期の語彙リスト（Resources/vocabularies/*.txt）。ファイル名の先頭の番号順に並べる。

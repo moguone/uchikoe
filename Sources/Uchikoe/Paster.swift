@@ -1,5 +1,6 @@
 import AppKit
 import ApplicationServices
+import Carbon.HIToolbox
 
 /// 文字列をクリップボード経由で前面のアプリに貼り付け、元のクリップボードを戻す
 enum Paster {
@@ -14,7 +15,9 @@ enum Paster {
         AXIsProcessTrustedWithOptions(options)
     }
 
-    /// 貼り付けまでできたら true。アクセシビリティが未許可ならクリップボードに残すだけ。
+    /// 貼り付けまでできたら true。次のときは貼り付けず、クリップボードに残すだけにする。
+    /// - アクセシビリティが未許可
+    /// - パスワード欄などでセキュア入力が有効（入力が保護されている場所に勝手に入れない）
     @MainActor
     static func paste(_ text: String) -> Bool {
         let pasteboard = NSPasteboard.general
@@ -24,7 +27,7 @@ enum Paster {
         pasteboard.setString(text, forType: .string)
         pasteboard.setData(Data(), forType: transient)
         pasteboard.setData(Data(), forType: concealed)
-        guard canSendKeys else { return false }
+        guard canSendKeys, !IsSecureEventInputEnabled() else { return false }
 
         let changeCount = pasteboard.changeCount
         let source = CGEventSource(stateID: .combinedSessionState)
