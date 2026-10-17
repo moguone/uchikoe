@@ -38,7 +38,7 @@ public struct VocabularyList: Codable, Identifiable, Equatable, Sendable {
     }
 
     /// アプリに同梱した語彙ファイルからリストを作る。
-    /// ファイル名は英数字だけにする（例: 01-development.txt）。日本語のファイル名は、Finder でコピーしたり zip を
+    /// ファイル名は ASCII の文字だけにする（例: 01-development.txt）。日本語のファイル名は、Finder でコピーしたり zip を
     /// 展開したりすると Unicode の正規化が変わり、アプリの署名が合わなくなって「壊れている」と判定されるため。
     /// 表示名は 1 行目の「# name: 開発」から読み、識別名は「ファイル名の番号-表示名」（例: 01-開発）にする
     public static func bundled(fileName: String, text: String) -> VocabularyList {
