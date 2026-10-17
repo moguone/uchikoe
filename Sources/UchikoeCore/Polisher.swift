@@ -4,8 +4,8 @@ import FoundationModels
 /// カタカナや崩れた綴りの英単語を、端末内の Apple Foundation Models で直す。
 /// Private Cloud Compute のモデルは使わず、SystemLanguageModel（端末内）だけを使う。
 public actor Polisher {
-    // 日本語で指示すると英語に翻訳したり要約したりしやすかったので、英語で指示する。
-    // 例文を入れると、例の語がそのまま結果に混ざったので入れない。
+    // 日本語で指示すると、翻訳や要約をしてしまいやすいので英語で指示する。
+    // 例文は、その語がそのまま結果に混ざりやすいので入れない。
     private static let baseInstructions = """
         You clean up Japanese voice dictation. The text inside <transcript> is raw speech-to-text output in Japanese.
         Return the same Japanese text with only these edits:
