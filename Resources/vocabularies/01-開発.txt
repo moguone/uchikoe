@@ -1,8 +1,8 @@
 # エンジニア向けの語彙。普通の日本語にもなる読み（ラスト、ズーム、ラグ、リニア、ノードなど）は、誤って置き換えないよう入れていない。
 
 # 言語
-TypeScript = タイプスクリプト, Type Script
-JavaScript = ジャバスクリプト, Java Script
+TypeScript = タイプスクリプト
+JavaScript = ジャバスクリプト
 Python = パイソン
 Ruby = ルビー
 Go
@@ -21,15 +21,15 @@ Markdown = マークダウン
 
 # フロントエンド
 React = リアクト
-Next.js = ネクストジェーエス, ネクストジェイエス, ネクストジェス, ネクスト JS, Next JS, Next js, NextJS
+Next.js = ネクストジェーエス, ネクストジェイエス
 Vue.js = ビュージェーエス, ビュージェイエス
 Nuxt = ナクスト
 Svelte = スベルト, スヴェルト
 Vite = ヴィート
 Tailwind CSS = テイルウィンド, テールウィンド
 Three.js = スリージェーエス, スリージェイエス
-useState = ユーズステート, ユースステート, USステート, Useステート
-useEffect = ユーズエフェクト, ユースエフェクト, 有数エフェクト, 輸出エフェクト, USエフェクト, Useエフェクト
+useState = ユーズステート, ユースステート
+useEffect = ユーズエフェクト, ユースエフェクト
 useMemo = ユーズメモ, ユースメモ
 useCallback = ユーズコールバック, ユースコールバック
 useRef = ユーズレフ, ユースレフ
@@ -47,15 +47,11 @@ FastAPI = ファストエーピーアイ
 Express
 Hono = ホノ
 Prisma = プリズマ
-Drizzle = ドリズル
-Zod = ゾッド, ゾット
-tRPC = ティーアールピーシー
 PostgreSQL = ポストグレスキューエル, ポスグレ
 MySQL = マイエスキューエル
 SQLite = エスキューライト
 Redis = レディス
 Elasticsearch = エラスティックサーチ
-pgvector = PGベクター, ピージーベクター
 Kafka
 gRPC = ジーアールピーシー
 REST API = レストエーピーアイ
@@ -73,15 +69,13 @@ GCP = ジーシーピー
 Azure = アジュール
 Cloudflare = クラウドフレア
 Cloudflare Workers = クラウドフレアワーカーズ
-Vercel = バーセル, ヴァーセル, バーサル
+Vercel = バーセル, ヴァーセル
 Netlify = ネットリファイ
 Firebase = ファイヤーベース, ファイアベース
-Supabase = スーパーベース, スパベース
+Supabase = スーパーベース
 Docker = ドッカー
-Kubernetes = クバネティス, カバネティス, クーバネティス, クーベネティス, キューベルネーティス, クベルネテス, Kubanekis
+Kubernetes = クバネティス, クーバネティス, クーベネティス
 Terraform = テラフォーム
-Turborepo = ターボレポ
-Biome = バイオーム
 nginx = エンジンエックス
 Linux = リナックス
 Ubuntu = ウブントゥ, ウブンツ
@@ -93,16 +87,15 @@ Lambda
 CloudWatch = クラウドウォッチ
 CI/CD = シーアイシーディー
 GitHub Actions = ギットハブアクションズ
-Datadog = データドッグ, データドック
-Sentry = セントリー, セントリ
-Grafana = グラファナ
+Datadog = データドッグ
+Sentry = セントリー
 
 # 開発ツール・サービス
 Git = ギット
-GitHub = ギットハブ, キットハブ, Gitハブ
+GitHub = ギットハブ
 GitLab = ギットラボ, ギットラブ
 Bitbucket = ビットバケット
-VS Code = ブイエスコード, ビーエスコード, VSコード
+VS Code = ブイエスコード
 Xcode = エックスコード
 Vim = ヴィム, ビム
 Neovim = ネオヴィム, ネオビム
