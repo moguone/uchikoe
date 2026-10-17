@@ -30,29 +30,6 @@ public struct VocabularyList: Codable, Identifiable, Equatable, Sendable {
         self.isEnabled = isEnabled
         self.entries = entries
     }
-
-    private enum CodingKeys: String, CodingKey {
-        case id, name, isEnabled, entries, text
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(UUID.self, forKey: .id)
-        name = try container.decode(String.self, forKey: .name)
-        isEnabled = try container.decode(Bool.self, forKey: .isEnabled)
-        // 以前の形式（テキストで書いたリスト）も読む
-        entries =
-            try container.decodeIfPresent([VocabularyEntry].self, forKey: .entries)
-            ?? Vocabulary.parse(container.decode(String.self, forKey: .text))
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(name, forKey: .name)
-        try container.encode(isEnabled, forKey: .isEnabled)
-        try container.encode(entries, forKey: .entries)
-    }
 }
 
 /// 有効な語彙リストをまとめたもの

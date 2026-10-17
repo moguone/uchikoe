@@ -181,15 +181,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         var polished: String?
         var polishMs: Int?
-        var polishNote = ""
+        var polishNote: String?
         if settings.polishes && polisherUnavailableReason == nil {
             let polishStart = ContinuousClock.now
             do {
                 polished = try await polisher.polish(cleaned, terms: vocabulary.terms)
                     .map { normalize($0, with: vocabulary) }
-                if polished == nil { polishNote = "・清書は翻訳や言い換えの疑いで使わなかった" }
+                if polished == nil { polishNote = "清書は翻訳や言い換えの疑いがあったので使わなかった" }
             } catch {
-                polishNote = "・清書に失敗: \(error.localizedDescription)"
+                polishNote = "清書できなかった: \(error.localizedDescription)"
             }
             polishMs = Self.milliseconds(since: polishStart)
         }
@@ -197,11 +197,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let text = polished ?? cleaned
         let pasted = Paster.paste(text)
         let seconds = Double(samples.count) / SpeechRecognizer.format.sampleRate
-        var detail = String(format: "%.1f 秒の音声・認識 %d ms", seconds, recognizeMs)
-        if let polishMs { detail += "・清書 \(polishMs) ms" }
-        detail += polishNote
-        if !pasted { detail += "・クリップボードにコピーだけした" }
-        show(result: text, detail: detail)
+        // メニューには、知らせることがあるときだけ一言出す
+        var notes = [polishNote].compactMap { $0 }
+        if !pasted { notes.append("貼り付けられなかったので、クリップボードにコピーした") }
+        show(result: text, detail: notes.isEmpty ? nil : notes.joined(separator: "・"))
 
         record(
             samples: samples,
@@ -251,7 +250,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: - メニューと設定画面
 
-    private func show(result: String?, detail: String) {
+    private func show(result: String?, detail: String?) {
         lastResult = result
         lastDetail = detail
         rebuildMenu()
@@ -295,7 +294,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         menu.addItem(.separator())
         let polish = menu.addItem(
-            withTitle: "Foundation Models で清書", action: #selector(togglePolish), keyEquivalent: "")
+            withTitle: "Apple Intelligence で清書", action: #selector(togglePolish), keyEquivalent: "")
         polish.state = settings.polishes && polisherUnavailableReason == nil ? .on : .off
         polish.isEnabled = polisherUnavailableReason == nil
 
