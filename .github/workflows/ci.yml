@@ -1,0 +1,30 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  lint-test-build:
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Lint
+        run: ./scripts/lint.sh
+      - name: Test
+        run: ./scripts/test.sh
+      - name: Package Apple Silicon app (ad-hoc signed)
+        run: ./scripts/package-app.sh
+      - name: Upload build
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: Uchikoe-macOS-arm64
+          path: |
+            dist/*.zip
+            dist/*.sha256
+          retention-days: 14

@@ -1,0 +1,160 @@
+# エンジニア向けの語彙。普通の日本語にもなる読み（ラスト、ズーム、ラグ、リニア、ノードなど）は、誤って置き換えないよう入れていない。
+
+# 言語
+TypeScript = タイプスクリプト, Type Script
+JavaScript = ジャバスクリプト, Java Script
+Python = パイソン
+Ruby = ルビー
+Go
+Rust
+Swift = スウィフト, スイフト
+Kotlin = コトリン
+Java = ジャバ
+PHP
+SQL = エスキューエル
+GraphQL = グラフキューエル
+HTML = エイチティーエムエル
+CSS = シーエスエス
+JSON = ジェイソン, ジェーソン
+YAML = ヤムル, ヤメル
+Markdown = マークダウン
+
+# フロントエンド
+React = リアクト
+Next.js = ネクストジェーエス, ネクストジェイエス, ネクスト JS, Next JS, NextJS
+Vue.js = ビュージェーエス, ビュージェイエス
+Nuxt = ナクスト
+Svelte = スベルト, スヴェルト
+Vite = ヴィート
+Tailwind CSS = テイルウィンド, テールウィンド
+Three.js = スリージェーエス, スリージェイエス
+useState = ユーズステート, ユースステート
+useEffect = ユーズエフェクト, ユースエフェクト
+useMemo = ユーズメモ, ユースメモ
+useCallback = ユーズコールバック, ユースコールバック
+useRef = ユーズレフ, ユースレフ
+props = プロップス
+Storybook = ストーリーブック
+
+# バックエンド・ランタイム
+Node.js = ノードジェーエス, ノードジェイエス
+Deno = ディーノ, デノ
+Bun
+Rails = レイルズ, レールズ
+Ruby on Rails = ルビーオンレイルズ, ルビーオンレールズ
+Django = ジャンゴ
+FastAPI = ファストエーピーアイ
+Express
+Hono = ホノ
+Prisma = プリズマ
+PostgreSQL = ポストグレスキューエル, ポスグレ
+MySQL = マイエスキューエル
+SQLite = エスキューライト
+Redis = レディス
+Elasticsearch = エラスティックサーチ
+Kafka
+gRPC = ジーアールピーシー
+REST API = レストエーピーアイ
+API = エーピーアイ
+SDK = エスディーケー
+CLI = シーエルアイ
+OAuth = オーオース
+JWT = ジェーダブリューティー, ジョット
+CORS = コルス
+WebSocket = ウェブソケット
+
+# インフラ・クラウド
+AWS = エーダブリューエス
+GCP = ジーシーピー
+Azure = アジュール
+Cloudflare = クラウドフレア
+Cloudflare Workers = クラウドフレアワーカーズ
+Vercel = バーセル, ヴァーセル
+Netlify = ネットリファイ
+Firebase = ファイヤーベース, ファイアベース
+Supabase = スーパーベース, スパベース
+Docker = ドッカー
+Kubernetes = クバネティス, クーバネティス, クーベネティス, Kubanekis
+Terraform = テラフォーム
+nginx = エンジンエックス
+Linux = リナックス
+Ubuntu = ウブントゥ, ウブンツ
+EC2 = イーシーツー
+S3 = エススリー
+ECS = イーシーエス
+EKS = イーケーエス
+Lambda
+CloudWatch = クラウドウォッチ
+CI/CD = シーアイシーディー
+GitHub Actions = ギットハブアクションズ
+Datadog = データドッグ
+Sentry = セントリー
+
+# 開発ツール・サービス
+Git = ギット
+GitHub = ギットハブ, キットハブ, Gitハブ
+GitLab = ギットラボ, ギットラブ
+Bitbucket = ビットバケット
+VS Code = ブイエスコード, ビーエスコード, VSコード
+Xcode = エックスコード
+Vim = ヴィム, ビム
+Neovim = ネオヴィム, ネオビム
+Homebrew = ホームブリュー
+npm = エヌピーエム
+pnpm = ピーエヌピーエム
+yarn = ヤーン
+ESLint = イーエスリント
+Prettier = プリティア
+Jest = ジェスト
+Vitest = バイテスト, ヴィテスト
+Playwright = プレイライト
+Cypress = サイプレス
+Figma = フィグマ
+Slack = スラック
+Notion = ノーション
+Jira = ジラ
+Confluence = コンフルエンス
+Linear
+Zoom
+Google Meet = グーグルミート
+Postman = ポストマン
+Claude Code = クロードコード
+Claude = クロード
+Codex = コーデックス
+ChatGPT = チャットジーピーティー
+OpenAI = オープンエーアイ
+Anthropic = アンソロピック
+Gemini = ジェミニ
+Copilot = コパイロット
+Cursor
+MCP = エムシーピー
+LLM = エルエルエム
+RAG
+
+# よく使う略語
+PR = ピーアール
+URL = ユーアールエル
+UI = ユーアイ
+UX = ユーエックス
+OS
+iOS = アイオーエス
+macOS = マックオーエス
+Android = アンドロイド
+iPhone = アイフォン, アイフォーン
+iPad = アイパッド
+Mac
+Wi-Fi = ワイファイ
+DB = ディービー
+CPU = シーピーユー
+GPU = ジーピーユー
+SSH = エスエスエイチ
+HTTP = エイチティーティーピー
+HTTPS = エイチティーティーピーエス
+DNS = ディーエヌエス
+TLS = ティーエルエス
+SaaS = サース
+OSS = オーエスエス
+QA = キューエー
+E2E = イーツーイー
+TODO = トゥードゥー
+README = リードミー

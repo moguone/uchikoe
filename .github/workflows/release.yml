@@ -1,0 +1,38 @@
+name: Prepare release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Lint
+        run: ./scripts/lint.sh
+      - name: Test
+        run: ./scripts/test.sh
+      - name: Package Apple Silicon app (ad-hoc signed)
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          export VERSION="${RELEASE_TAG#v}"
+          ./scripts/package-app.sh
+      - name: Upload development build
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: Uchikoe-development-arm64
+          path: |
+            dist/*.zip
+            dist/*.sha256
+          retention-days: 14
+      - name: Prepare draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" \
+            --verify-tag --draft --prerelease --title "Uchikoe $RELEASE_TAG" \
+            --notes-file .github/RELEASE_NOTES.md
